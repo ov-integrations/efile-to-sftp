@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 
+import sys
+import subprocess
+
+installed_dependencies = subprocess.run(
+    [sys.executable, '-m', 'pip', 'install', '-r', 'python_dependencies.ini'],
+    check=True, stdout=subprocess.PIPE).stdout.decode().strip()
+if 'Successfully installed' in installed_dependencies:
+    raise Exception('Some required dependent libraries were installed. ' \
+        'Module execution has to be terminated now to use installed libraries on the next scheduled launch.')
+
 import json
 import os
 import onevizion
@@ -43,8 +53,8 @@ try:
 		cnopts = cnopts
 		)
 except:
-	Message('could not connect')
-	Message(sys.exc_info())
+	print('could not connect')
+	print(sys.exc_info())
 	quit(1)
 
 # make sure api user has RE on the tab with checkbox and the field list of blobs and RE for the trackor type(sometimes Checklist) and R for WEB_SERVICES 
@@ -63,17 +73,25 @@ hasErrors = False
 for f in Req.jsonData:
 	FileReq = onevizion.Trackor(trackorType = TrackorType, URL = OvUrl, userName=OvUserName, password=OvPassword, isTokenAuth=True)
 	fname = FileReq.GetFile(trackorId=f['TRACKOR_ID'], fieldName = EFileField)
+	print(fname)
 	if len(FileReq.errors)>0:
 		hasErrors = True
 		print(FileReq.errors)
 		continue
 	try:
-		with sftp.cd(SftpOutDir) :
+		with sftp.cd(SftpInDir) :
+			sftp.remove(fname)
+	except:
+		pass # removing the file if it exists before put.  if it is not there, ignore the error
+
+	try:
+		with sftp.cd(SftpInDir) :
 			sftp.put(fname)
 		Req.update(filters = {'TRACKOR_ID': f['TRACKOR_ID']}, fields = {CheckboxField: 0})
+		os.remove(fname)
 	except:
 		hasErrors = True
-		print(FileReq.errors)
+		print(sys.exc_info)
 		continue
 
 if hasErrors:
