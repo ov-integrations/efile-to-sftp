@@ -13,8 +13,8 @@ if 'Successfully installed' in installed_dependencies:
 import json
 import os
 import onevizion
-import shutil
 import pysftp
+import urllib.parse
 
 # Read settings
 with open('settings','r') as p:
@@ -73,20 +73,21 @@ hasErrors = False
 for f in Req.jsonData:
 	FileReq = onevizion.Trackor(trackorType = TrackorType, URL = OvUrl, userName=OvUserName, password=OvPassword, isTokenAuth=True)
 	fname = FileReq.GetFile(trackorId=f['TRACKOR_ID'], fieldName = EFileField)
-	print(fname)
+	fnameDecoded = urllib.parse.unquote(fname) #turn %20 into spaces
+	print(f'{fname}   {fnameDecoded}')
 	if len(FileReq.errors)>0:
 		hasErrors = True
 		print(FileReq.errors)
 		continue
 	try:
 		with sftp.cd(SftpInDir) :
-			sftp.remove(fname)
+			sftp.remove(fnameDecoded)
 	except:
 		pass # removing the file if it exists before put.  if it is not there, ignore the error
 
 	try:
 		with sftp.cd(SftpInDir) :
-			sftp.put(fname)
+			sftp.put(fname,fnameDecoded)
 		Req.update(filters = {'TRACKOR_ID': f['TRACKOR_ID']}, fields = {CheckboxField: 0})
 		os.remove(fname)
 	except:
