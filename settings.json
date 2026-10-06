@@ -1,0 +1,19 @@
+{
+    "sftpUrl": "***.onevizion.com",
+    "sftpPort": 22,
+    "sftpUserName": "******",
+    "sftpPassword": "************",
+    "sftpPrivateKey": "************",
+    "sftpPrivateKeyPassphrase": "************",
+    "sftpFingerprint": "************",
+    "sftpDirectory": "/***/***/",
+    "sftpOutboundDirectory": "/***/***/",
+
+    "ovUrl": "https://***.onevizion.com/",
+    "ovAccessKey": "******",
+    "ovSecretKey": "************",
+
+    "ovTrackorType": "******",
+    "ovCheckboxFieldName": "******",
+    "ovEfileFieldName": "******"
+}
