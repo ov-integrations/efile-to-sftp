@@ -1,4 +1,5 @@
-command = python3 efile-to_sftp.py
-settings_file_name = settings
+command = python3 start_module.py
+settings_file_name = settings.json
 default_schedule = 0 */5 * * * ?
-read_from_stdout = true
+read_from_stdout = false
+1.0 = [26.18.0,)

@@ -1,0 +1,89 @@
+{
+    "type": "object",
+    "properties": {
+        "sftpUrl": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpPort": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+        },
+        "sftpUserName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpPassword": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpPrivateKey": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpPrivateKeyPassphrase": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpFingerprint": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 43
+        },
+        "sftpDirectory": {
+            "type": "string",
+            "minLength": 1
+        },
+        "sftpOutboundDirectory": {
+            "type": "string"
+        },
+        "ovUrl": {
+            "type": "string",
+            "pattern": "^https://.*|^http://.*"
+        },
+        "ovAccessKey": {
+            "type": "string",
+            "minLength": 1
+        },
+        "ovSecretKey": {
+            "type": "string",
+            "minLength": 1
+        },
+        "ovTrackorType": {
+            "type": "string",
+            "minLength": 1
+        },
+        "ovCheckboxFieldName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "ovEfileFieldName": {
+            "type": "string",
+            "minLength": 1
+        }
+    },
+    "required": [
+        "sftpUrl",
+        "sftpUserName",
+        "sftpDirectory",
+        "ovUrl",
+        "ovAccessKey",
+        "ovSecretKey",
+        "ovTrackorType",
+        "ovCheckboxFieldName",
+        "ovEfileFieldName"
+    ],
+    "anyOf": [
+        {
+            "required": [
+                "sftpPassword"
+            ]
+        },
+        {
+            "required": [
+                "sftpPrivateKey"
+            ]
+        }
+    ]
+}
